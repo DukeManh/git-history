@@ -1,10 +1,11 @@
 import { Logo } from './logo';
+import './styles/base.scss';
 
 export function App() {
 	return (
 		<>
 			<Logo />
-			<p>Hello Vite + Preact!</p>
+			<p className="text-indigo-900">Hello Vite + Preact!</p>
 			<p>
 				<a
 					class="link"
