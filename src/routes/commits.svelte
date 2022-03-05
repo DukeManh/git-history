@@ -1,8 +1,9 @@
 <script>
-	import Counter from '../lib/Counter.svelte';
-	import BaseLayout from '../lib/layout/base.svelte';
+	import Counter from '../lib/Open.svelte';
 </script>
 
-<BaseLayout>
-	<Counter />
-</BaseLayout>
+<svelte:head>
+	<title>Commit History</title>
+</svelte:head>
+
+<Counter />
