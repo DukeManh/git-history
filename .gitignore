@@ -22,4 +22,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
-/.svelte-kit
+.svelte-kit
+src-tauri/target
+src-tauri/WixTools
