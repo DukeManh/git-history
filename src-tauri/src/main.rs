@@ -7,7 +7,7 @@ use std::fs;
 use std::path::Path;
 
 #[tauri::command]
-fn read_repo(local_repo: String) {
+fn read_repo(local_repo: String) -> String {
   // Create a path to the desired file
   let path = Path::new(&local_repo);
   let display = path.display();
@@ -21,6 +21,8 @@ fn read_repo(local_repo: String) {
       }
     }
   };
+
+  display.to_string()
 }
 
 fn main() {

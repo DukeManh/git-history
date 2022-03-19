@@ -1,9 +1,9 @@
 <script>
-	import OpenDialog from '../lib/RepoSelectorButton.svelte';
+	import OpenButton from '$lib/components/OpenButton.svelte';
 </script>
 
 <svelte:head>
 	<title>Commit History</title>
 </svelte:head>
 
-<OpenDialog />
+<OpenButton />

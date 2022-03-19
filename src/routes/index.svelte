@@ -1,14 +1,8 @@
 <script lang="ts">
 	import { open } from '@tauri-apps/api/dialog';
-	import { invoke } from '@tauri-apps/api/tauri';
+	import repository from '$lib/stores/repository';
 
-	import RepoSelectorButton from '../lib/RepoSelectorButton.svelte';
-
-	function readLocalRepo(localRepo: string) {
-		return invoke('read_repo', {
-			localRepo
-		});
-	}
+	import RepoSelectorButton from '$lib/components/OpenButton.svelte';
 
 	let repo = 'Select a repository';
 
@@ -20,9 +14,11 @@
 				directory: true
 			});
 			repo = Array.isArray(folder) ? folder[0] : folder;
-			await readLocalRepo(repo);
+			if (repo) {
+				repository.openRepo(repo);
+			}
 		} catch (error) {
-			console.log(error);
+			console.error(error);
 		}
 	}
 </script>

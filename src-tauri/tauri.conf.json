@@ -52,6 +52,9 @@
 		"allowlist": {
 			"dialog": {
 				"open": true
+			},
+			"path": {
+				"all": true
 			}
 		},
 		"windows": [
