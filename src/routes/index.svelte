@@ -1,8 +1,9 @@
 <script lang="ts">
 	import { open } from '@tauri-apps/api/dialog';
 	import repository from '$lib/stores/repository';
+	import { goto } from '$app/navigation';
 
-	import RepoSelectorButton from '$lib/components/OpenButton.svelte';
+	import OpenButton from '$lib/components/OpenButton.svelte';
 
 	let repo = 'Select a repository';
 
@@ -15,7 +16,8 @@
 			});
 			repo = Array.isArray(folder) ? folder[0] : folder;
 			if (repo) {
-				repository.openRepo(repo);
+				await repository.openRepo(repo);
+				goto('/commits');
 			}
 		} catch (error) {
 			console.error(error);
@@ -27,5 +29,4 @@
 	<title>Commits history</title>
 </svelte:head>
 
-<RepoSelectorButton on:click={selectRepo} />
-<p class="text-lg">{repo}</p>
+<OpenButton on:click={selectRepo} />

@@ -1,6 +1,6 @@
 <script>
 	import Main from '$lib/components/Main.svelte';
-	import Commits from '$lib/components/History/Commits.svelte';
+	import Tags from '$lib/components/History/Tags.svelte';
 </script>
 
 <svelte:head>
@@ -8,5 +8,5 @@
 </svelte:head>
 
 <Main>
-	<Commits />
+	<Tags />
 </Main>

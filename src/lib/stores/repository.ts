@@ -12,7 +12,7 @@ const repository = writable<Repository>({
 });
 
 function openRepo(localPath: string) {
-	invoke<ReadRepo>('read_repo', {
+	return invoke<ReadRepo>('read_repo', {
 		localRepo: localPath
 	}).then(async (absolutePath) => {
 		repository.set({
