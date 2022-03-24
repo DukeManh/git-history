@@ -2,11 +2,25 @@
 	export let selected: 'commits' | 'tags';
 
 	import { classNames } from '$lib/utils/helper';
+
+	const tabs = [
+		{
+			href: '/commits',
+			name: 'commits',
+			title: ' Commits '
+		},
+		{
+			href: '/tags',
+			name: 'tags',
+			title: ' Tags '
+		}
+	];
 </script>
 
 <div class="h-full flex flex-wrap flex-row shadow-sm">
-	<a class={classNames('tile', selected !== 'tags' && 'selected')} href="/commits"> Commits </a>
-	<a class={classNames('tile', selected === 'tags' && 'selected')} href="/tags"> Tags </a>
+	{#each tabs as { name, href, title }, i (i)}
+		<a class={classNames('tile', selected === name && 'selected')} {href}>{title}</a>
+	{/each}
 </div>
 
 <style lang="scss">
