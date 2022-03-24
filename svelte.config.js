@@ -11,11 +11,14 @@ const config = {
 
 	kit: {
 		adapter: adapter({
-			pages: 'build',
-			assets: 'build',
+			pages: 'dist',
+			assets: 'dist',
 			fallback: 'app.html',
 			precompress: true
-		})
+		}),
+		files: {
+			assets: './public'
+		}
 	}
 };
 
