@@ -1,1 +1,1 @@
-export type ReadRepo = string;
+export type ReadRepo = [string, string];

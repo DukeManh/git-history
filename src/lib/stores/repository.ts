@@ -7,23 +7,34 @@ const repository = writable<Repository>({
 	fullName: 'Seneca-CDOT/telescope',
 	name: 'telescope',
 	branch: 'master',
-	localPath: '/Users/chrisbui/Documents/repos/telescope'
+	localPath: '/Users/chrisbui/Documents/repos/telescope',
+	commits: []
 });
 
 function openRepo(localPath: string) {
 	return invoke<ReadRepo>('read_repo', {
 		localRepo: localPath
-	}).then(async (absolutePath) => {
-		if (window) {
+	})
+		.then(async ([repo, branch]) => {
+			// console.log(repo, branch, commitLogs);
+			// const commits = commitLogs.filter(Boolean).map((line) => {
+			// 	const [sha, message] = line.split(/ (.*)/);
+			// 	return {
+			// 		sha,
+			// 		message
+			// 	};
+			// });
+
 			repository.set({
-				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-				// @ts-ignore: Global tauri path module, need window to work
-				name: await window.__TAURI__.path.basename(absolutePath),
+				name: repo,
 				localPath,
-				branch: 'master'
+				branch,
+				commits: []
 			});
-		}
-	});
+		})
+		.catch((error) => {
+			console.error(error);
+		});
 }
 
 function createStore() {

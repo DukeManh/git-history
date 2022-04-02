@@ -4,6 +4,7 @@ export default interface Repository {
 	branch: string;
 	localPath: string;
 	owner?: GithubUser;
+	commits: Commit[];
 	createdAt?: Date;
 	updatedAt?: Date;
 	pushedAt?: Date;
@@ -15,4 +16,13 @@ export default interface Repository {
 export interface GithubUser {
 	login: string;
 	email: string;
+}
+
+export interface Commit {
+	sha: string;
+	message: string;
+}
+export interface Tag {
+	tag: string;
+	message: string;
 }
