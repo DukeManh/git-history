@@ -5,7 +5,7 @@ use tauri::command;
 use crate::git;
 
 #[command]
-pub fn read_repo(local_repo: String) -> Result<(String, String), String> {
+pub async fn read_repo(local_repo: String) -> Result<(String, String), String> {
   let path = Path::new(&local_repo);
 
   match fs::read_dir(&path) {
@@ -23,4 +23,11 @@ pub fn read_repo(local_repo: String) -> Result<(String, String), String> {
       }
     }
   }
+}
+
+#[command]
+pub async fn get_commits(local_repo: String, limit: u16) -> Vec<String> {
+  let commits = git::log::get_commits(&local_repo, &limit);
+
+  commits
 }

@@ -1,6 +1,6 @@
 use crate::git;
 
-pub fn get_commits(local_repo: &String, limit: u16) -> Vec<String> {
+pub fn get_commits(local_repo: &String, limit: &u16) -> Vec<String> {
   let output = git::cli::spawn(
     &String::from(format!("log -{} --oneline", limit)),
     local_repo,
