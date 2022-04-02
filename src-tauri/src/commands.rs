@@ -26,8 +26,10 @@ pub async fn read_repo(local_repo: String) -> Result<(String, String), String> {
 }
 
 #[command]
-pub async fn get_commits(local_repo: String, limit: u16) -> Vec<String> {
-  let commits = git::log::get_commits(&local_repo, &limit);
+pub async fn get_commits(local_repo: String, limit: u16, before: String) -> Vec<String> {
+  let args = [&format!("-{} --oneline", limit), " ", &before].concat();
+
+  let commits = git::log::get_commits(&local_repo, &args);
 
   commits
 }

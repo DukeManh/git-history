@@ -6,14 +6,16 @@
 	export let active = undefined;
 
 	onMount(() => {
-		repository
-			.getCommits(100)
-			.then((commits) => {
-				console.log(commits);
-			})
-			.catch((err) => {
-				console.log(err);
-			});
+		if ($repository.commits.length == 0) {
+			repository
+				.getCommits()
+				.then((commits) => {
+					console.log(commits);
+				})
+				.catch((err) => {
+					console.log(err);
+				});
+		}
 	});
 
 	let rows: HistoryList = [];
@@ -32,6 +34,15 @@
 	<title>Commit History</title>
 </svelte:head>
 
-<HistoryLayout tab="commits" {active} {rows}>
+<HistoryLayout
+	tab="commits"
+	{active}
+	{rows}
+	loadMore={() => {
+		if ($repository.commits.length) {
+			repository.getCommits(`${$repository.commits[$repository.commits.length - 1].sha}~1`);
+		}
+	}}
+>
 	<slot />
 </HistoryLayout>
