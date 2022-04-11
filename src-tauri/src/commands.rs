@@ -33,3 +33,10 @@ pub async fn get_commits(local_repo: String, limit: u16, before: String) -> Vec<
 
   commits
 }
+
+use git::show::Commit;
+
+#[command]
+pub async fn git_show(local_repo: String, object: String) -> Result<Commit, String> {
+  git::show::show(&local_repo, &object)
+}

@@ -2,7 +2,7 @@ import { writable, get } from 'svelte/store';
 import { invoke } from '@tauri-apps/api/tauri';
 import type { Writable } from 'svelte/store';
 import type Repository from '$lib/types/repository.type';
-import type { ReadRepo, GetCommits } from '$lib/types/commands.type';
+import type { ReadRepo, GetCommits, GitShow } from '$lib/types/commands.type';
 import type { Commit } from '$lib/types/repository.type';
 
 const COMMITS_PER_LOAD = 150;
@@ -11,6 +11,7 @@ type Store = {
 	subscribe: Writable<Repository>['subscribe'];
 	openRepo: (localPath: string) => Promise<void>;
 	getCommits: (before?: string) => Promise<Commit[]>;
+	showCommit: (object: string) => Promise<GitShow | null>;
 };
 
 const createStore = (): Store => {
@@ -57,10 +58,23 @@ const createStore = (): Store => {
 		return commits;
 	}
 
+	async function showCommit(object: string) {
+		try {
+			const out = await invoke<GitShow>('git_show', {
+				localRepo: get(repository).localPath,
+				object
+			});
+			return out;
+		} catch (error) {
+			console.log(error);
+		}
+	}
+
 	return {
 		subscribe: repository.subscribe,
 		openRepo,
-		getCommits
+		getCommits,
+		showCommit
 	};
 };
 

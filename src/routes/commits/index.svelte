@@ -6,4 +6,8 @@
 	<title>Commit History</title>
 </svelte:head>
 
-<CommitsLayout>Hello</CommitsLayout>
+<CommitsLayout>
+	<div>Select a commit</div>
+
+	<div>Project summary: TODO</div>
+</CommitsLayout>

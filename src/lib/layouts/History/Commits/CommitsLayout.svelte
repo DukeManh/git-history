@@ -7,14 +7,9 @@
 
 	onMount(() => {
 		if ($repository.commits.length == 0) {
-			repository
-				.getCommits()
-				.then((commits) => {
-					console.log(commits);
-				})
-				.catch((err) => {
-					console.log(err);
-				});
+			repository.getCommits().catch((err) => {
+				console.log(err);
+			});
 		}
 	});
 

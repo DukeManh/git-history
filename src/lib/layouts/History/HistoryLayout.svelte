@@ -24,7 +24,7 @@
 				on:reachingbottom={loadMore}
 			>
 				<ul class="space-y-[1px]">
-					{#each rows as row, i (i)}
+					{#each rows as row (row.key)}
 						<li class={classNames('item', active === row.key && 'selected')}>
 							<HistoryItem {row} />
 						</li>
