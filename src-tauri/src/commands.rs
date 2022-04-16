@@ -11,11 +11,11 @@ pub async fn read_repo(local_repo: String) -> Result<(String, String), String> {
   match fs::read_dir(&path) {
     Err(_why) => Err("path is not a directory".into()),
     Ok(_files) => {
-      let is_git_repo = git::revision::is_git_repo(&local_repo);
+      let is_git_repo = git::rev_parse::is_git_repo(&local_repo);
 
       if is_git_repo == "true" {
         let repo = String::from(path.file_name().unwrap().to_str().unwrap());
-        let branch = git::revision::get_branch(&local_repo);
+        let branch = git::rev_parse::get_branch(&local_repo);
 
         Ok((repo, branch))
       } else {
@@ -39,4 +39,9 @@ use git::show::Commit;
 #[command]
 pub async fn git_show(local_repo: String, object: String) -> Result<Commit, String> {
   git::show::show(&local_repo, &object)
+}
+
+#[command]
+pub async fn git_show_diff(local_repo: String, object: String) -> String {
+  git::diff::diff(&local_repo, &object)
 }

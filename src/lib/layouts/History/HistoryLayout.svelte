@@ -36,7 +36,8 @@
 	<div class="w-[2px] h-full cursor-grab separator shadow-current" />
 	<div class="flex-[4]">
 		<SideLayout>
-			<slot slot="content" />
+			<slot name="header" slot="header" />
+			<slot name="content" slot="content" />
 		</SideLayout>
 	</div>
 </div>

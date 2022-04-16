@@ -11,3 +11,5 @@ export type GitShow = {
 	readonly parent_sha: string;
 	readonly message: string;
 };
+
+export type GitShowDiff = string;

@@ -18,7 +18,7 @@ impl Serialize for Commit {
   where
     S: Serializer,
   {
-    let mut s = serializer.serialize_struct("Commit", 6)?;
+    let mut s: <S as Serializer>::SerializeStruct = serializer.serialize_struct("Commit", 6)?;
     s.serialize_field("sha", &self.sha)?;
     s.serialize_field("author", &self.author)?;
     s.serialize_field("author_email", &self.author_email)?;
@@ -35,14 +35,19 @@ pub fn show(local_repo: &String, args: &String) -> Result<Commit, String> {
   let format = "--format=%H%n%aN%n%aE%n%at%n%ct%n%P%n%B";
   let run = [SHOW, " ", args, " ", format, " --no-patch"].concat();
   let out = git::cli::spawn(&run, local_repo);
-  println!("{}", out);
 
   let commit_info: Vec<_> = out.lines().collect();
 
   if commit_info.len() < 7 {
     Err(String::from("Invalid commit object"))
   } else {
-    let commit = Commit {
+    let commit = parse_commit(commit_info);
+    Ok(commit)
+  }
+}
+
+fn parse_commit(commit_info: Vec<&str>) -> Commit {
+     Commit {
       sha: commit_info[0].to_string(),
       author: commit_info[1].to_string(),
       author_email: commit_info[2].to_string(),
@@ -50,7 +55,5 @@ pub fn show(local_repo: &String, args: &String) -> Result<Commit, String> {
       commit_date: commit_info[4].parse::<u32>().unwrap(),
       parent_sha: commit_info[5].to_string(),
       message: commit_info[6].to_string(),
-    };
-    Ok(commit)
-  }
+    }
 }

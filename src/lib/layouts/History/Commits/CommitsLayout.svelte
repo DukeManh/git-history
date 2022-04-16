@@ -39,5 +39,6 @@
 		}
 	}}
 >
-	<slot />
+	<slot name="header" slot="header" />
+	<slot name="content" slot="content" />
 </HistoryLayout>

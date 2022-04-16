@@ -2,5 +2,6 @@ pub mod branch;
 pub mod cli;
 pub mod diff;
 pub mod log;
-pub mod revision;
+pub mod rev_parse;
 pub mod show;
+pub mod rev_list;

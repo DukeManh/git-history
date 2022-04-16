@@ -2,7 +2,7 @@ import { writable, get } from 'svelte/store';
 import { invoke } from '@tauri-apps/api/tauri';
 import type { Writable } from 'svelte/store';
 import type Repository from '$lib/types/repository.type';
-import type { ReadRepo, GetCommits, GitShow } from '$lib/types/commands.type';
+import type { ReadRepo, GetCommits, GitShow, GitShowDiff } from '$lib/types/commands.type';
 import type { Commit } from '$lib/types/repository.type';
 
 const COMMITS_PER_LOAD = 150;
@@ -12,6 +12,7 @@ type Store = {
 	openRepo: (localPath: string) => Promise<void>;
 	getCommits: (before?: string) => Promise<Commit[]>;
 	showCommit: (object: string) => Promise<GitShow | null>;
+	showDiff: (object: string) => Promise<GitShowDiff | null>;
 };
 
 const createStore = (): Store => {
@@ -70,11 +71,20 @@ const createStore = (): Store => {
 		}
 	}
 
+	async function showDiff(object: string) {
+		const out = await invoke<GitShowDiff>('git_show_diff', {
+			localRepo: get(repository).localPath,
+			object
+		});
+		return out;
+	}
+
 	return {
 		subscribe: repository.subscribe,
 		openRepo,
 		getCommits,
-		showCommit
+		showCommit,
+		showDiff
 	};
 };
 
