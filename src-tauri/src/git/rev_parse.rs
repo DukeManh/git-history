@@ -3,13 +3,13 @@ use crate::git;
 static PARSE: &str = "rev-parse";
 
 pub fn is_git_repo(local_repo: &String) -> String {
-  let run = [PARSE, " ", "--is-inside-work-tree"].concat();
+  let args = [PARSE, "--is-inside-work-tree"];
 
-  return git::cli::spawn(&run, local_repo);
+  return git::cli::spawn(local_repo, args);
 }
 
 pub fn get_branch(local_repo: &String) -> String {
-  let run = [PARSE, " ", "--abbrev-ref HEAD"].concat();
+  let args = [PARSE, "--abbrev-ref", "HEAD"];
 
-  return git::cli::spawn(&run, local_repo);
+  return git::cli::spawn(local_repo, args);
 }

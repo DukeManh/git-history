@@ -12,8 +12,8 @@ pub fn diff(local_repo: &String, object: &String ) -> String {
     [object, "~1"].concat()
   };
 
-  let run: String = ["diff ", object, " ", &previous_commit].concat();
-  let out = git::cli::spawn(&run, &local_repo);
+  let args= ["diff", object, &previous_commit];
+  let out = git::cli::spawn( &local_repo, args);
 
   out
 }

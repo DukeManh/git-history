@@ -1,10 +1,14 @@
-use std::process::Command;
+use std::{process::Command, ffi::OsStr};
 
-pub fn spawn(command: &String, working_directory: &String) -> String {
-  let output = Command::new("git")
+pub fn spawn<I, S>(working_directory: &String, args: I) -> String
+  where
+      I: IntoIterator<Item = S>,
+      S: AsRef<OsStr>,
+ {
+    let output = Command::new("git")
     .current_dir(working_directory)
     .args(["--no-pager"])
-    .args(command.split(" "))
+    .args(args)
     .output()
     .unwrap_or_else(|e| panic!("Failed to run Git command: {}", e));
 

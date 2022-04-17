@@ -15,11 +15,11 @@ pub struct Commit {
 }
 
 
-pub fn show(local_repo: &String, args: &String) -> Commit {
+pub fn show(local_repo: &String, object: &String) -> Commit {
   // custom output format: "sha \n author_name \n author_email \n author_date \n commit_date \n parent_sha \n  message"
   let format = "--format=%H%n%aN%n%aE%n%at%n%ct%n%P%n%B";
-  let run = [SHOW, " ", args, " ", format, " --no-patch"].concat();
-  let out = git::cli::spawn(&run, local_repo);
+  let args = [SHOW, &object, format, "--no-patch"];
+  let out = git::cli::spawn(local_repo, args);
 
   let commit_info: Vec<_> = out.lines().collect();
 
