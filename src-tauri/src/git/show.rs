@@ -1,8 +1,9 @@
 use crate::git;
-use serde::ser::{Serialize, SerializeStruct, Serializer};
+use serde::Serialize;
 
 static SHOW: &str = "show";
 
+#[derive(Serialize)]
 pub struct Commit {
   sha: String,
   author: String,
@@ -13,24 +14,8 @@ pub struct Commit {
   message: String,
 }
 
-impl Serialize for Commit {
-  fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
-  where
-    S: Serializer,
-  {
-    let mut s: <S as Serializer>::SerializeStruct = serializer.serialize_struct("Commit", 6)?;
-    s.serialize_field("sha", &self.sha)?;
-    s.serialize_field("author", &self.author)?;
-    s.serialize_field("author_email", &self.author_email)?;
-    s.serialize_field("author_date", &self.author_date)?;
-    s.serialize_field("commit_date", &self.commit_date)?;
-    s.serialize_field("parent_sha", &self.parent_sha)?;
-    s.serialize_field("message", &self.message)?;
-    s.end()
-  }
-}
 
-pub fn show(local_repo: &String, args: &String) -> Result<Commit, String> {
+pub fn show(local_repo: &String, args: &String) -> Commit {
   // custom output format: "sha \n author_name \n author_email \n author_date \n commit_date \n parent_sha \n  message"
   let format = "--format=%H%n%aN%n%aE%n%at%n%ct%n%P%n%B";
   let run = [SHOW, " ", args, " ", format, " --no-patch"].concat();
@@ -38,12 +23,7 @@ pub fn show(local_repo: &String, args: &String) -> Result<Commit, String> {
 
   let commit_info: Vec<_> = out.lines().collect();
 
-  if commit_info.len() < 7 {
-    Err(String::from("Invalid commit object"))
-  } else {
-    let commit = parse_commit(commit_info);
-    Ok(commit)
-  }
+   parse_commit(commit_info)
 }
 
 fn parse_commit(commit_info: Vec<&str>) -> Commit {
