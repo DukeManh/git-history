@@ -27,18 +27,25 @@ pub async fn read_repo(local_repo: String) -> Result<(String, String), String> {
 
 #[command]
 pub async fn get_commits(local_repo: String, limit: u16, before: String) -> Vec<String> {
-  let args = [&format!("-{} --oneline", limit), " ", &before].concat();
-
-  let commits = git::log::get_commits(&local_repo, &args);
-
-  commits
+  git::log::get_commits(&local_repo, &limit, &before)
 }
 
 use git::show::Commit;
+use serde::Serialize;
+
+#[derive(Serialize)]
+pub struct Diff {
+  commit: Commit,
+  files: Vec<String>,
+}
 
 #[command]
-pub async fn git_show(local_repo: String, object: String) -> Result<Commit, String> {
-  git::show::show(&local_repo, &object)
+pub async fn git_show(local_repo: String, object: String) -> Diff {
+  let files = git::diff_tree::get_changed_files(&local_repo, &object);
+
+  let commit = git::show::show(&local_repo, &object);
+
+  Diff { commit, files }
 }
 
 #[command]

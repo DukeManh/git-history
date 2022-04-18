@@ -25,23 +25,23 @@
 	<div slot="header" class="p-2">
 		{#if commit}
 			<div>
-				{commit.message}
+				{commit.commit.message}
 			</div>
 			<div>
-				{commit.author} - {commit.sha.slice(0, 7)}
+				{commit.commit.author} - {commit.commit.sha.slice(0, 7)}
 			</div>
 		{/if}
 	</div>
 	<div slot="content" class="h-full flex flex-col">
 		{#if diff}
 			<div class="flex flex-row border-b border-teal-600 space-x-[1px]">
-				{#each ['[sha].svelte', 'CommitsLayout.svelte'] as file (file)}
+				{#each commit.files as file (file)}
 					<div class="py-2 px-4 cursor-pointer bg-slate-500">{file}</div>
 				{/each}
 			</div>
 			<div class="flex-1 min-h-0 overflow-scroll px-4 py-2">
 				{#each splitLines(diff) as line, i (i)}
-					<div>{line}</div>
+					<div class="h-8">{line}</div>
 				{/each}
 			</div>
 			<div />
