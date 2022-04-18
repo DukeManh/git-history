@@ -1,14 +1,18 @@
-use std::{process::Command, ffi::OsStr};
+use std::{ffi::OsStr, process::Command};
 
 pub fn spawn<I, S>(working_directory: &String, args: I) -> String
-  where
-      I: IntoIterator<Item = S>,
-      S: AsRef<OsStr>,
- {
-    let output = Command::new("git")
+where
+  I: IntoIterator<Item = S>,
+  S: AsRef<OsStr>,
+{
+  let mut command = Command::new("git");
+
+  command
     .current_dir(working_directory)
     .args(["--no-pager"])
-    .args(args)
+    .args(args);
+
+  let output = command
     .output()
     .unwrap_or_else(|e| panic!("Failed to run Git command: {}", e));
 
@@ -23,7 +27,11 @@ pub fn spawn<I, S>(working_directory: &String, args: I) -> String
   } else {
     let s = String::from_utf8_lossy(&output.stderr);
 
-    println!("Git Error: {}\n", s);
+    /* Use for debugging
+    let arguments: Vec<_> = command.get_args().collect();
+    println!("{:?}\n", arguments);
+    */
+    println!("Git Command finished with errors: {}\n", s);
 
     String::from("")
   }
